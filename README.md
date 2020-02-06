@@ -1,2 +1,2 @@
 # JavaDesignPattern
-Recording the way of learning software design patterns
+Recording the way of  software design patterns
