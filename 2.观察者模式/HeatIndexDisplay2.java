@@ -1,0 +1,39 @@
+import java.util.Observable;
+import java.util.Observer;
+
+public class HeatIndexDisplay2 implements Observer, DisplayElement {
+    
+    Observable observable;
+    float headIndex = 0.0f;
+    
+    public HeatIndexDisplay2(Observable observable) {
+        this.observable = observable;
+        observable.addObserver(this);
+    }
+    
+    public void update(Observable observable, Object arg) {
+        if(observable instanceof WeatherData2) {
+            WeatherData2 weatherData2 = (WeatherData2) observable;
+            float temp = weatherData2.getTemperature();
+            float h = weatherData2.getHumidity();
+            headIndex = computeHeatIndex(temp, h);
+            display();
+        }
+    }
+    
+    private float computeHeatIndex(float t, float rh) {
+		float index = (float)((16.923 + (0.185212 * t) + (5.37941 * rh) - (0.100254 * t * rh) 
+			+ (0.00941695 * (t * t)) + (0.00728898 * (rh * rh)) 
+			+ (0.000345372 * (t * t * rh)) - (0.000814971 * (t * rh * rh)) +
+			(0.0000102102 * (t * t * rh * rh)) - (0.000038646 * (t * t * t)) + (0.0000291583 * 
+			(rh * rh * rh)) + (0.00000142721 * (t * t * t * rh)) + 
+			(0.000000197483 * (t * rh * rh * rh)) - (0.0000000218429 * (t * t * t * rh * rh)) +
+			0.000000000843296 * (t * t * rh * rh * rh)) -
+			(0.0000000000481975 * (t * t * t * rh * rh * rh)));
+		return index;
+	}
+    
+    public void display() {  //自定义布告方式，每个观察者都不一样
+        System.out.println("HeatIndex: " + headIndex);
+    }
+}
